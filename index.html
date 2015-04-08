@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<style>
+    .done{text-decoration: line-through; color: #a9a9a9;}
+</style>
 </head>
-<body>
-	<h1>Hello World</h1>
+
+<body ng-app="todo">
+
+<script type="text/javascript">
+	angular.module('todo',[])
+             .controller('todoController', function( $scope ) {
+          $scope.todos = [
+            {title:'create todo app', done:false}
+            ];
+                 
+                 $scope.addTodo = function() {
+                     $scope.todos.push({'title':$scope.newTodo, 'done':false})
+                 }
+                 $scope.clearTodo = function() {
+                     $scope.todos = $scope.todos.filter(function(item){
+                         return !item.done
+                     })
+                 }
+      });
+</script>
+
+
+<div ng-controller="todoController">
+        <h2> Simple ToDo App </h2>
+        <form name="frm" ng-submit="addTodo()">
+            <input type="text" name="newTodo" ng-model="newTodo" required />
+            <button ng-disabled="frm.$invalid">Submit New Todo Item</button>
+        </form>
+        <button ng-click="clearTodo()">Clear Compeleted Todo Items</button>
+        <h4> ToDo List </h4>
+          <div ng-repeat="todo in todos">
+              <ul><li>
+                  <input type=checkbox ng-model="todo.done" />
+                  <span ng-class="{done:todo.done}"> {{ todo.title }} 
+                  </span>
+               </ul></li>
+          </div>
+      </div>    
 </body>
 </html>
